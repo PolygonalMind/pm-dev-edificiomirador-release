@@ -27,23 +27,32 @@
         verticalGrid = fillAxisArray(64, 85, true);
 
         document.addEventListener("DOMContentLoaded", function (event) {
-            img = document.getElementById("image");
-            info = document.getElementById("info");
-            selector = document.getElementById("selector");
+            const img = document.getElementById("image");
+            const info = document.getElementById("info");
+            const selector = document.getElementById("selector");
 
             img.addEventListener("mousemove", function (e) {
                 mouseX = e.clientX;
                 mouseY = e.clientY;
 
                 const imgBound = img.getBoundingClientRect();
+
+                const imgLeft = imgBound.left;
+                const imgTop = imgBound.top;
+
+                const xAdjusted = mouseX - imgLeft;
+                const yAdjusted = mouseY - imgTop;
+
                 const imgWidth = imgBound.width;
                 const imgHeight = imgBound.height;
 
                 const pixelsXPerGrid = imgWidth / horizontalGrids;
                 const pixelsYPerGrid = imgHeight / verticalGrids;
 
-                const x = Math.floor(mouseX / pixelsXPerGrid);
-                const y = Math.floor(mouseY / pixelsYPerGrid);
+                const x = Math.floor(xAdjusted / pixelsXPerGrid);
+                const y = Math.floor(yAdjusted / pixelsYPerGrid);
+
+                console.log(mouseX, mouseY)
 
                 if (x > minHorizontalIndex && x < maxHorizontalIndex && y > minVerticalIndex && y < maxVerticalIndex) {
                     info.innerHTML = `[${horizontalGrid[x]}, ${verticalGrid[y]}]`;
@@ -55,11 +64,11 @@
                     selector.style.height = `${pixelsYPerGrid}px`;
                     selector.style["box-shadow"] = "inset 0px 0px 0px 2px #fff";
 
-                    selector.style.top = `${y * pixelsYPerGrid}px`;
-                    selector.style.left = `${x * pixelsXPerGrid}px`;
+                    selector.style.top = `${y * pixelsYPerGrid + imgTop}px`;
+                    selector.style.left = `${x * pixelsXPerGrid + imgLeft}px`;
                 } else {
                     info.innerHTML = "";
-                    
+
                     selector.style.width = `0px`;
                     selector.style.height = `0px`;
                     selector.style["box-shadow"] = "none";
@@ -70,12 +79,16 @@
     </script>
 </head>
 
-<body style="margin: 0; padding: 0; box-sizing: border-box; height: 100%; display: flex; align-items: center;">
+<body
+    style="margin: 0; padding: 0; box-sizing: border-box; height: 100%; display: flex; align-items: center; justify-content: center;">
     <div id="info"
         style="position: absolute; display: inline-block; text-align: center; width: auto; background-color: white; top: 50px; left: 50px; z-index: 1;">
     </div>
-    
-    <img id="image" style="object-fit: contain; width: 100%; height: 100%;" src="Art_Guides_72pp.png" alt="edificio mirador" />
+
+    <div style="width: 80%;">
+        <img id="image" style="width: 100%" src="Art_Guides_72pp.png" alt="edificio mirador" />
+    </div>
+
     <div id="selector"
         style="width: 0px; height: 0px; box-sizing: border-box; position: absolute; top: 30px; left: 30px;"></div>
 </body>
