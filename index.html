@@ -1,0 +1,83 @@
+<!-- html template -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Edificio Mirador</title>
+    <script type="application/javascript">
+
+        const horizontalGrids = 42;
+        const verticalGrids = 22;
+
+        const minHorizontalIndex = 0;
+        const maxHorizontalIndex = 41;
+        const minVerticalIndex = 0;
+        const maxVerticalIndex = 21;
+
+        const fillAxisArray = (min, max, isChars = false) => {
+            const axisArray = [];
+            for (let i = max; i >= min; i--) {
+                axisArray.push(isChars ? String.fromCharCode(i) : i);
+            }
+            return axisArray;
+        }
+
+        horizontalGrid = fillAxisArray(0, 41);
+        verticalGrid = fillAxisArray(64, 85, true);
+
+        document.addEventListener("DOMContentLoaded", function (event) {
+            img = document.getElementById("image");
+            info = document.getElementById("info");
+            selector = document.getElementById("selector");
+
+            img.addEventListener("mousemove", function (e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+
+                const imgBound = img.getBoundingClientRect();
+                const imgWidth = imgBound.width;
+                const imgHeight = imgBound.height;
+
+                const pixelsXPerGrid = imgWidth / horizontalGrids;
+                const pixelsYPerGrid = imgHeight / verticalGrids;
+
+                const x = Math.floor(mouseX / pixelsXPerGrid);
+                const y = Math.floor(mouseY / pixelsYPerGrid);
+
+                if (x > minHorizontalIndex && x < maxHorizontalIndex && y > minVerticalIndex && y < maxVerticalIndex) {
+                    info.innerHTML = `[${horizontalGrid[x]}, ${verticalGrid[y]}]`;
+                    info.style.left = `${mouseX + 10}px`;
+                    info.style.top = `${mouseY + 20}px`;
+                    info.style.transform = "translateX(-50%)";
+
+                    selector.style.width = `${pixelsXPerGrid}px`;
+                    selector.style.height = `${pixelsYPerGrid}px`;
+                    selector.style["box-shadow"] = "inset 0px 0px 0px 2px #fff";
+
+                    selector.style.top = `${y * pixelsYPerGrid}px`;
+                    selector.style.left = `${x * pixelsXPerGrid}px`;
+                } else {
+                    info.innerHTML = "";
+                    
+                    selector.style.width = `0px`;
+                    selector.style.height = `0px`;
+                    selector.style["box-shadow"] = "none";
+                }
+
+            });
+        });
+    </script>
+</head>
+
+<body style="margin: 0; padding: 0; box-sizing: border-box">
+    <div id="info"
+        style="position: absolute; display: inline-block; text-align: center; width: auto; background-color: white; top: 50px; left: 50px">
+    </div>
+    <!-- <img id="image" #image width="100%" decoding="async" loading="lazy" src="edificiomirador.avif" alt="edificio mirador" /> -->
+    <img id="image" width="100%" src="Art_Guides_72pp.png" alt="edificio mirador" />
+    <div id="selector"
+        style="width: 0px; height: 0px; box-sizing: border-box; position: absolute; top: 30px; left: 30px"></div>
+</body>
+
+</html>
