@@ -1,15 +1,50 @@
-<!-- html template -->
 <!DOCTYPE html>
 <html lang="en" style="height: 100%;">
 
 <head>
     <meta charset="UTF-8" />
     <title>Edificio Mirador</title>
-    <script type="application/javascript">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
+        #info {
+            position: absolute;
+            display: inline-block;
+            text-align: center;
+            width: auto;
+            background-color: white;
+            top: 50px;
+            left: 50px;
+            z-index: 1;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        #image {
+            width: 100%;
+        }
+
+        #selector {
+            width: 0px;
+            height: 0px;
+            box-sizing: border-box;
+            position: absolute;
+            top: 30px;
+            left: 30px;
+        }
+    </style>
+
+    <script type="application/javascript">
         const horizontalGrids = 42;
         const verticalGrids = 22;
-
         const minHorizontalIndex = 0;
         const maxHorizontalIndex = 41;
         const minVerticalIndex = 0;
@@ -23,17 +58,24 @@
             return axisArray;
         }
 
-        horizontalGrid = fillAxisArray(0, 41);
-        verticalGrid = fillAxisArray(64, 85, true);
+        const horizontalGrid = fillAxisArray(0, 41);
+        const verticalGrid = fillAxisArray(64, 85, true);
 
         document.addEventListener("DOMContentLoaded", function (event) {
             const img = document.getElementById("image");
             const info = document.getElementById("info");
             const selector = document.getElementById("selector");
 
-            img.addEventListener("mousemove", function (e) {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
+            selector.addEventListener("mousemove", (e) => {
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+                info.style.left = `${mouseX + 10}px`;
+                info.style.top = `${mouseY + 25}px`;
+            });
+
+            img.addEventListener("mousemove", (e) => {
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
 
                 const imgBound = img.getBoundingClientRect();
 
@@ -52,13 +94,14 @@
                 const x = Math.floor(xAdjusted / pixelsXPerGrid);
                 const y = Math.floor(yAdjusted / pixelsYPerGrid);
 
-                console.log(mouseX, mouseY)
+                info.style.left = `${mouseX + 10}px`;
+                info.style.top = `${mouseY + 20}px`;
 
                 if (x > minHorizontalIndex && x < maxHorizontalIndex && y > minVerticalIndex && y < maxVerticalIndex) {
-                    info.innerHTML = `[${horizontalGrid[x]}, ${verticalGrid[y]}]`;
-                    info.style.left = `${mouseX + 10}px`;
-                    info.style.top = `${mouseY + 20}px`;
+                    info.innerHTML = `[${verticalGrid[y]}, ${horizontalGrid[x]}]`;
+
                     info.style.transform = "translateX(-50%)";
+                    info.style.padding = "5px";
 
                     selector.style.width = `${pixelsXPerGrid}px`;
                     selector.style.height = `${pixelsYPerGrid}px`;
@@ -66,8 +109,16 @@
 
                     selector.style.top = `${y * pixelsYPerGrid + imgTop}px`;
                     selector.style.left = `${x * pixelsXPerGrid + imgLeft}px`;
+                    selector.style.cursor = 'pointer';
+
+                    const letterToIndex = (20 - y);
+                    const numberToIndex = (41 - x)
+                    const tokenId = letterToIndex * 40 + numberToIndex;                   
+
+                    selector.href = `https://testnets.opensea.io/assets/sepolia/0xfa5515a6cd41b449f003a58213e7620ac2c1f4af/${tokenId}`
                 } else {
                     info.innerHTML = "";
+                    info.style.padding = "0px";
 
                     selector.style.width = `0px`;
                     selector.style.height = `0px`;
@@ -79,18 +130,15 @@
     </script>
 </head>
 
-<body
-    style="margin: 0; padding: 0; box-sizing: border-box; height: 100%; display: flex; align-items: center; justify-content: center;">
-    <div id="info"
-        style="position: absolute; display: inline-block; text-align: center; width: auto; background-color: white; top: 50px; left: 50px; z-index: 1;">
+<body>
+    <div id="info">
     </div>
 
     <div style="width: 80%;">
-        <img id="image" style="width: 100%" src="Art_Guides_72pp.png" alt="edificio mirador" />
+        <img id="image" src="Art_Guides_72pp.png" alt="edificio mirador" />
     </div>
 
-    <div id="selector"
-        style="width: 0px; height: 0px; box-sizing: border-box; position: absolute; top: 30px; left: 30px;"></div>
+    <a id="selector" target="_blank"></a>
 </body>
 
 </html>
