@@ -1,6 +1,6 @@
 <!-- html template -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%;">
 
 <head>
     <meta charset="UTF-8" />
@@ -70,14 +70,14 @@
     </script>
 </head>
 
-<body style="margin: 0; padding: 0; box-sizing: border-box">
+<body style="margin: 0; padding: 0; box-sizing: border-box; height: 100%; display: flex; align-items: center;">
     <div id="info"
-        style="position: absolute; display: inline-block; text-align: center; width: auto; background-color: white; top: 50px; left: 50px">
+        style="position: absolute; display: inline-block; text-align: center; width: auto; background-color: white; top: 50px; left: 50px; z-index: 1;">
     </div>
-    <!-- <img id="image" #image width="100%" decoding="async" loading="lazy" src="edificiomirador.avif" alt="edificio mirador" /> -->
-    <img id="image" width="100%" src="Art_Guides_72pp.png" alt="edificio mirador" />
+    
+    <img id="image" style="object-fit: contain; width: 100%; height: 100%;" src="Art_Guides_72pp.png" alt="edificio mirador" />
     <div id="selector"
-        style="width: 0px; height: 0px; box-sizing: border-box; position: absolute; top: 30px; left: 30px"></div>
+        style="width: 0px; height: 0px; box-sizing: border-box; position: absolute; top: 30px; left: 30px;"></div>
 </body>
 
 </html>
