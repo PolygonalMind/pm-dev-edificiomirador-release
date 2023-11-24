@@ -13,6 +13,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            background-color: #202020;
         }
 
         #info {
@@ -113,9 +114,11 @@
 
                     const letterToIndex = (20 - y);
                     const numberToIndex = (41 - x)
-                    const tokenId = letterToIndex * 40 + numberToIndex;                   
+                    const tokenId = Number.parseInt(verticalGrid[y].charCodeAt(0))  % 2 !== 0
+                        ? letterToIndex * 40 + numberToIndex
+                        : letterToIndex * 40 + (40 - numberToIndex) + 1;
 
-                    selector.href = `https://testnets.opensea.io/assets/sepolia/0xfa5515a6cd41b449f003a58213e7620ac2c1f4af/${tokenId}`
+                    selector.href = `https://opensea.io/assets/matic/0xb11ecd7c193a764403914e0ecd963e622e02deb6/${tokenId}`
                 } else {
                     info.innerHTML = "";
                     info.style.padding = "0px";
